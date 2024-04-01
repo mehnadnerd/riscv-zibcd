@@ -1,10 +1,10 @@
-= RISC-V Example Specification Document (Zexmpl)
-Authors: Author 1, Author 2
+= RISC-V BCD extension Specification Document (Zibcd)
+Authors: Brendan Sweeney
 :docgroup: RISC-V Task Group
-:description: RISC-V Example Specification Document (Zexmpl)
+:description: RISC-V BCD extension (Zibcd)
 :company: RISC-V.org
-:revdate: 1/2023
-:revnumber: 1.0
+:revdate: 2024-04-01
+:revnumber: 0.1
 :revremark: This document is under development. Expect potential changes. Visit http://riscv.org/spec-state for further details.
 :revinfo:
 :url-riscv: http://riscv.org
@@ -62,6 +62,7 @@ include::contributors.adoc[]
 
 include::intro.adoc[]
 include::chapter2.adoc[]
+include::chapter3.adoc[]
 
 // The index must precede the bibliography
 include::index.adoc[]

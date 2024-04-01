@@ -1,15 +1,27 @@
 [[intro]]
 == Introduction
 
-Lorem ipsum indexterm:[Lorem ipsum] dolor sit amet, consectetur adipiscing elit, sed do *eiusmod tempor* incididunt ut labore et dolore magna aliqua. Felis imperdiet proin fermentum leo vel orci porta. Volutpat lacus laoreet non curabitur indexterm:[curabitur] gravida indexterm:[gravida]. Posuere urna nec tincidunt praesent semper feugiat nibh. Elit ``ullamcorper`` dignissim cras tincidunt lobortis. Malesuada fames ac turpis egestas integer eget. Tristique sollicitudin nibh sit amet commodo. Sed felis eget velit aliquet. Sit amet aliquam id diam maecenas ultricies mi. Consectetur purus ut faucibus pulvinar. Lectus urna duis convallis convallis tellus id. Fermentum iaculis eu non diam. Feugiat in fermentum posuere urna nec tincidunt praesent semper feugiat. Urna nec tincidunt praesent semper feugiat nibh.
+The purpose of this extension is to close a clear competitive gap of RISC-V: the lack of BCD instructions.
+Unlike competing architectures such as System 360 and x86-32, RISC-V lacks efficient instructions for working with BCD data, and for converting it back and forth with other representations.
+This proposal seeks to allievate that gap by proposing two groups of new instructions:
 
-Commodo viverra maecenas accumsan lacus. Vulputate odio ut enim blandit indexterm:[blandit] volutpat maecenas volutpat blandit. Urna porttitor rhoncus dolor purus non. Tellus mauris a diam maecenas sed. Vitae auctor eu augue ut lectus. Ridiculus mus mauris vitae ultricies leo integer. Consequat semper viverra nam *libero* justo laoreet sit amet. Pellentesque pulvinar pellentesque habitant morbi tristique senectus et netus et. Ac placerat vestibulum lectus mauris ``ultrices`` eros in cursus turpis. Accumsan in nisl nisi scelerisque eu ultrices vitae. Cras ornare arcu dui vivamus. Vitae congue mauris rhoncus aenean. Consequat mauris nunc congue nisi vitae suscipit tellus. Tempus egestas sed sed risus pretium quam vulputate dignissim. Quis varius quam quisque id diam vel. Mattis nunc sed blandit libero volutpat sed cras ornare arcu. Amet mauris commodo quis imperdiet massa tincidunt nunc.
 
-[NOTE]
-====
-The name RISC-V indexterm:[RISC-V] was chosen to represent the fifth major RISC ISA design from UC Berkeley (RISC-I cite:[riscI-isca1981], RISC-II cite:[Katevenis:1983], SOAR cite:[Ungar:1984], and SPUR cite:[spur-jsscc1989] were the first four). We also pun on the use of the Roman numeral "V" to signify "variations" and "vectors", as support for a range of architecture research, including various data-parallel accelerators, is an explicit goal of the ISA design.
-====
+* BCD Arithmetic Instructions
+* BCD Conversion Instructions
 
-=== Sub Section of Introduction
+=== Representation
 
-Pellentesque habitant morbi *tristique* senectus et netus et. Aliquam purus sit amet luctus. Odio eu ``feugiat`` pretium nibh ipsum consequat nisl vel. Euismod lacinia at quis risus sed vulputate odio ut. Eu sem integer vitae justo eget. Cursus euismod quis viverra nibh. Tempus egestas sed sed risus. Quis imperdiet massa tincidunt nunc pulvinar. Id venenatis a condimentum vitae sapien pellentesque habitant.
+A packed BCD representation, where each digit is allocated 4 bits, is used in this extension.
+To convert to and from zoned representations, bit packing instructions must be used (a nibble-wise zip/unzip).
+BCD numbers are represented in the registers in a big-endian format, with the least-significant digit occupying bits [3:0].
+Signed BCD is always used in this extension, with the high four bits of the register representing the sign.
+0xC represents a '+' sign and 0xD represents a '-' sign.
+Negative zeroes are valid source operands but will never be produced as destination operands.
+
+The canonical representation for invalid BCD numbers is 0x0.
+To avoid having traps on arithmetic operations, any BCD operation that has invalid sources (such as having digit nibbles out of the range 0x0-0x9, or an invalid sign nibble), or that would produce an invalid result, produces the canonical invalid BCD value.
+0x0 is chosen for the canonical representation for ease of comparing against for branches to handle the error case.
+
+As 32-bit values, the range of numbers that can be represented is from -9,999,999 to +9,999,999.
+When stored in a 64-bit register, they are sign-extended from bit 31 as normal.
+As 64-bit values, the range of numbers that can be represented is from -999,999,999,999,999 to 999,999,999,999,999.

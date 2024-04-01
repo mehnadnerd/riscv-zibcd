@@ -1,0 +1,56 @@
+[[chapter3]]
+== Conversion Instructions
+
+=== Convert To BCD
+
+Synopsis::
+Converts the signed number in _rs1_ to a BCD number in _rd_.
+
+Mnemonic::
+====
+cvttobcd _rd_, _rs1_
+
+cvttobcdw _rd_, _rs1_
+
+====
+Encoding::
+TBD, somewhere in OP/OP64
+
+Description::
+
+Converts the signed integer value in _rs1_ and places the result in _rd_.
+If the number is not representable, the canonical invalid BCD number (0x0) is stored.
+The word-sized version is RV64 only.
+
+SAIL code::
+[source,sail]
+--
+TODO
+--
+
+=== Convert From BCD
+
+Synopsis::
+Converts the BCD number in _rs1_ to a signed integer in _rd_.
+
+Mnemonic::
+====
+cvtfrombcd _rd_, _rs1_
+
+cvtfrombcdw _rd_, _rs1_
+
+====
+Encoding::
+TBD, somewhere in OP/OP64
+
+Description::
+
+Converts the BCD value in _rs1_ to a signed integer and places the result in _rd_.
+If the number is not a valid BCD number, the most negative number is placed in _rd_.
+The word-sized version is RV64 only.
+
+SAIL code::
+[source,sail]
+--
+TODO
+--
